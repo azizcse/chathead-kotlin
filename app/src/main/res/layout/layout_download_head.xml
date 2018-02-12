@@ -24,15 +24,13 @@
         android:paddingRight="-20dp"
         android:visibility="visible">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/thumb_img_view"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerInParent="true"
             android:layout_margin="1dp"
-            app:actualImageScaleType="focusCrop"
-            app:placeholderImageScaleType="centerCrop"
-            app:roundAsCircle="true" />
+            android:src="@mipmap/ic_launcher"/>
 
         <TextView
             android:id="@+id/dowloadPercentage"
