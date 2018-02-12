@@ -1,16 +1,17 @@
-package com.core.head.view;
+package com.core.head.provider
+
+import com.core.head.util.AppModel
+
 
 /*
 *  ****************************************************************************
-*  * Created by : Md. Azizul Islam on 2/8/2018 at 5:56 PM.
+*  * Created by : Md. Azizul Islam on 2/12/2018 at 1:59 PM.
 *  * Email : azizul@w3engineers.com
 *  * 
-*  * Last edited by : Md. Azizul Islam on 2/8/2018.
+*  * Last edited by : Md. Azizul Islam on 2/12/2018.
 *  * 
 *  * Last Reviewed by : <Reviewer Name> on <mm/dd/yy>  
 *  ****************************************************************************
 */
 
-
-public class a {
-}
+data class AppEvent(val appList :List<AppModel>)

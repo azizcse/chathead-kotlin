@@ -15,6 +15,14 @@ import com.core.head.R
 import com.core.head.util.Util
 import com.facebook.drawee.view.SimpleDraweeView
 import java.util.*
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.graphics.drawable.Drawable
+import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
+import com.core.head.adapter.AppAdapter
+import com.core.head.util.AppModel
+import com.core.kbasekit.ui.base.BaseListener
 
 
 /*
@@ -28,7 +36,8 @@ import java.util.*
 *  ****************************************************************************
 */
 
-class HeadView {
+class HeadView : BaseListener<AppModel> {
+
     private var layoutParam: WindowManager.LayoutParams? = null
     private var mContext: Context
     private var mWindowManager: WindowManager? = null
@@ -38,11 +47,14 @@ class HeadView {
     private val downloadCount: TextView
     private val downloadCountView: LinearLayout
     private var isOpen = false
+    private var initialX: Int = 0
+    private var appAdapter : AppAdapter
 
     private constructor(context: Context) {
         this.mContext = context
         mDownloadView = LayoutInflater.from(mContext).inflate(R.layout.layout_download_head, null)
         downloadHeadRecycler = mDownloadView!!.findViewById(R.id.chatHeadRecyclverView) as RecyclerView
+        appAdapter = AppAdapter(context)
 
         layoutParam = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -131,11 +143,27 @@ class HeadView {
     }
 
     fun onCloseDownloadHead(){
-
+        if (downloadHeadRecycler != null && downloadHeadRecycler.visibility == View.VISIBLE) {
+            downloadHeadRecycler.visibility = View.GONE
+        }
+        downloadCountView.visibility = View.GONE
+        layoutParam!!.x = Util.getDeviceWidth(mContext)
+        layoutParam!!.y = initialX
+        layoutParam!!.width = WindowManager.LayoutParams.WRAP_CONTENT
+        mWindowManager!!.updateViewLayout(mDownloadView, layoutParam)
+        isOpen = false
     }
 
     fun onOpenDownloadHead(){
-
+        layoutParam!!.x = 0
+        initialX = layoutParam!!.y
+        mWindowManager!!.updateViewLayout(mDownloadView, layoutParam)
+        downloadCountView.visibility = View.VISIBLE
+        downloadHeadRecycler!!.setVisibility(View.VISIBLE)
+        downloadHeadRecycler.layoutManager = LinearLayoutManager(mContext)
+        downloadHeadRecycler.adapter = appAdapter
+        appAdapter.itemClickListener = this
+        isOpen = true
     }
 
 
@@ -143,6 +171,21 @@ class HeadView {
         override fun onClick(v: View?) {
 
         }
+    }
+
+    fun loadData(appList: List<AppModel>) {
+        Log.e("AppDataModel","List size = ${appList.size}")
+        appAdapter.clear()
+        appAdapter.addItems(appList)
+        downloadCount.text = "(${appList.size})"
+    }
+
+    override fun onItemClick(view: View, t: AppModel) {
+        Toast.makeText(mContext, "${t.path}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+
     }
 
 
