@@ -78,7 +78,6 @@ class HeadView : BaseListener<AppModel> {
         downloadCountView.visibility = View.GONE
 
         thumbImageView.setOnTouchListener(onTouchListener)
-
     }
 
     fun showHead() {
