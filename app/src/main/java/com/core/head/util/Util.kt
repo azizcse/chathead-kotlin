@@ -15,6 +15,7 @@ import android.content.Context
 */
 
 object Util {
+
     fun getDeviceWidth(context: Context): Int {
         return context.resources.displayMetrics.widthPixels
     }
